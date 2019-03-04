@@ -1,13 +1,20 @@
 import qs from 'querystring';
 const { WebClient } = require('@slack/client');
 
+const splitter = ',';
+
 const getNewText = (origin, user, isAdd = true) => {
   const [dish, usersStr] = origin.split('\n');
-  const users = usersStr ? usersStr.split(',') : [];
+  const users = usersStr ? usersStr.split(splitter) : [];
   if (isAdd) {
-    return dish + '\n' + users.concat('@' + user.username).join(',');
+    if (users.find(`<@${user.id}>`)) {
+      return (
+        dish + '\n' + users.filter(i => i !== `<@${user.id}>`).join(splitter)
+      );
+    }
+    return dish + '\n' + users.concat(`<@${user.id}>`).join(splitter);
   }
-  return dish + '\n' + users.filter(i => i !== `<@${user.id}>`).join(',');
+  return dish + '\n' + users.filter(i => i !== `<@${user.id}>`).join(splitter);
 };
 
 const countUser = usersStr => {
