@@ -90,14 +90,15 @@ exports.handler = (event, context, callback) => {
             {
               type: 'divider',
             },
-            ...newBlocks,
-            {
-              type: 'section',
-              text: {
-                type: 'mrkdwn',
-                text: `TỔNG CỘNG: ${total}`,
+            ...newBlocks.concat([
+              {
+                type: 'section',
+                text: {
+                  type: 'mrkdwn',
+                  text: `TỔNG CỘNG: ${total}`,
+                },
               },
-            },
+            ]),
           ],
         })
         .then(rsp => {
