@@ -7,7 +7,7 @@ const getNewText = (origin, user, isAdd = true) => {
   const [dish, usersStr] = origin.split('\n');
   const users = usersStr ? usersStr.split(splitter) : [];
   if (isAdd) {
-    if (users.find(`<@${user.id}>`)) {
+    if (users.find(i => i === `<@${user.id}>`)) {
       return (
         dish + '\n' + users.filter(i => i !== `<@${user.id}>`).join(splitter)
       );
