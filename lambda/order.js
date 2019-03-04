@@ -50,7 +50,9 @@ exports.handler = (event, context, callback) => {
     const { value, block_id } = actions[0];
 
     if (value === 'summary') {
-      const currentTime = new Date().toLocaleString();
+      const currentTime = new Date().toLocaleString('vi-VN', {
+        timeZone: 'Asia/Saigon',
+      });
       const newBlocks = blocks
         .map(i => {
           if (typeof i.accessory !== 'undefined') {
@@ -63,11 +65,17 @@ exports.handler = (event, context, callback) => {
                 type: 'mrkdwn',
                 text: `${dish}: ${userLength}`,
               },
+              count: userLength,
             };
           }
           return null;
         })
         .filter(i => i);
+
+      const total = newBlocks
+        .map(i => i.count)
+        .reduce((acc, value) => acc + value);
+
       web.chat
         .postMessage({
           channel: channel.id,
@@ -83,6 +91,13 @@ exports.handler = (event, context, callback) => {
               type: 'divider',
             },
             ...newBlocks,
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: `TỔNG CỘNG: ${total}`,
+              },
+            },
           ],
         })
         .then(rsp => {
