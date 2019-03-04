@@ -65,7 +65,6 @@ exports.handler = (event, context, callback) => {
                 type: 'mrkdwn',
                 text: `${dish}: ${userLength}`,
               },
-              count: userLength,
             };
           }
           return null;
@@ -73,7 +72,10 @@ exports.handler = (event, context, callback) => {
         .filter(i => i);
 
       const total = newBlocks
-        .map(i => i.count)
+        .map(i => {
+          const userLength = i.text.text.split(': ')[1];
+          return parseInt(userLength);
+        })
         .reduce((acc, value) => acc + value);
 
       web.chat
@@ -90,15 +92,14 @@ exports.handler = (event, context, callback) => {
             {
               type: 'divider',
             },
-            ...newBlocks.concat([
-              {
-                type: 'section',
-                text: {
-                  type: 'mrkdwn',
-                  text: `TỔNG CỘNG: ${total}`,
-                },
+            ...newBlocks,
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: `TỔNG CỘNG: ${total}`,
               },
-            ]),
+            },
           ],
         })
         .then(rsp => {
