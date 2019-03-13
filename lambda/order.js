@@ -123,7 +123,7 @@ exports.handler = (event, context, callback) => {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `Người lấy cơm: <@${getter.id}>`,
+                text: `Người lấy cơm: @hieunm`,
               },
             },
           ],
