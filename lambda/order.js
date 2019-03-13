@@ -93,12 +93,10 @@ exports.handler = (event, context, callback) => {
             return listUser(usersStr);
           }
         })
-        .reduce((acc, value) => acc.concat(value), []);
+        .reduce((acc, value) => acc.concat(value), [])
+        .filter(i => i);
 
       const getter = randomUser(users);
-      console.log(users);
-      console.log(getter);
-
       web.chat
         .postMessage({
           channel: channel.id,
