@@ -23,7 +23,7 @@ const countUser = usersStr => {
 };
 
 const listUser = usersStr => {
-  return usersStr ? usersStr.split(',') : [];
+  return usersStr ? usersStr.split(splitter) : [];
 };
 
 const randomUser = users => {
@@ -95,6 +95,8 @@ exports.handler = (event, context, callback) => {
         })
         .reduce((acc, value) => acc.concat(value), []);
 
+      const getter = randomUser(users);
+
       web.chat
         .postMessage({
           channel: channel.id,
@@ -121,7 +123,7 @@ exports.handler = (event, context, callback) => {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `Người lấy cơm: @${randomUser(users)}`,
+                text: `Người lấy cơm: <@${getter.id}>`,
               },
             },
           ],
