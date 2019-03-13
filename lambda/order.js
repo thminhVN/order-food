@@ -18,8 +18,16 @@ const getNewText = (origin, user, isAdd = true) => {
 };
 
 const countUser = usersStr => {
-  const users = usersStr ? usersStr.split(',') : [];
+  const users = listUser(usersStr);
   return users.length;
+};
+
+const listUser = usersStr => {
+  return usersStr ? usersStr.split(',') : [];
+};
+
+const randomUser = users => {
+  return users[Math.floor(Math.random() * users.length)];
 };
 
 exports.handler = (event, context, callback) => {
@@ -78,6 +86,15 @@ exports.handler = (event, context, callback) => {
         })
         .reduce((acc, value) => acc + value);
 
+      const users = blocks
+        .map(i => {
+          if (typeof i.accessory !== 'undefined') {
+            const usersStr = i.text.text.split('\n')[1];
+            return listUser(usersStr);
+          }
+        })
+        .reduce((acc, value) => acc.concat(value), []);
+
       web.chat
         .postMessage({
           channel: channel.id,
@@ -98,6 +115,13 @@ exports.handler = (event, context, callback) => {
               text: {
                 type: 'mrkdwn',
                 text: `TỔNG CỘNG: ${total}`,
+              },
+            },
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: `Người lấy cơm: @${randomUser(users)}`,
               },
             },
           ],
