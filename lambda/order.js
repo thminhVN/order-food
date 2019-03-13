@@ -96,6 +96,8 @@ exports.handler = (event, context, callback) => {
         .reduce((acc, value) => acc.concat(value), []);
 
       const getter = randomUser(users);
+      console.log(users);
+      console.log(getter);
 
       web.chat
         .postMessage({
@@ -123,7 +125,7 @@ exports.handler = (event, context, callback) => {
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `Người lấy cơm: @hieunm`,
+                text: `Người lấy cơm: ${getter}`,
               },
             },
           ],
