@@ -42,7 +42,10 @@ exports.handler = (event, context, callback) => {
     const req = qs.parse(event.body);
     const { text, channel_id } = req;
     console.log(text);
-    const menus = text.split(/\r?\n/);
+    const menus = text
+      .replace('\r\n', '\n')
+      .replace('\r', '\n')
+      .split('\n');
 
     const title = [
       {
