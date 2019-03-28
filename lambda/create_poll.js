@@ -1,5 +1,4 @@
 import qs from 'querystring';
-import splitLines from 'split-lines';
 
 const { WebClient } = require('@slack/client');
 
@@ -44,6 +43,7 @@ exports.handler = (event, context, callback) => {
     const req = qs.parse(event.body);
     const { text, channel_id } = req;
     const menus = text.replace(/(\r\n|\n|\r)/gm, '|').split('|');
+    console.log(menus);
 
     const title = [
       {
