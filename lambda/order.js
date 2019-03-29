@@ -27,13 +27,12 @@ const listUser = usersStr => {
   return usersStr ? usersStr.split(splitter) : [];
 };
 
-const randomUsers = (users, total) => {
+const randomUsers = users => {
+  const total = users.length;
   const totalRandom = Math.ceil(total / maxCountPerPerson);
-  const arrayNumber = new Array(totalRandom);
-  console.log(arrayNumber);
+  const arrayNumber = Array(totalRandom).fill(1);
   return arrayNumber.reduce((acc, item) => {
     const restUsers = users.filter(i => !acc.includes(i));
-    console.log(restUsers);
     const user = restUsers[Math.floor(Math.random() * restUsers.length)];
     return acc.concat([user]);
   }, []);
@@ -105,7 +104,7 @@ exports.handler = (event, context, callback) => {
         .reduce((acc, value) => acc.concat(value), [])
         .filter(i => i);
 
-      const getter = randomUsers(users, total).join(', ');
+      const getter = randomUsers(users).join(', ');
       console.log(randomUsers(users, total));
       console.log(getter);
       web.chat
