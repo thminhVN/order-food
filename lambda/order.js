@@ -30,8 +30,10 @@ const listUser = usersStr => {
 const randomUsers = (users, total) => {
   const totalRandom = Math.ceil(total / maxCountPerPerson);
   const arrayNumber = new Array(totalRandom);
+  console.log(arrayNumber);
   return arrayNumber.reduce((acc, item) => {
     const restUsers = users.filter(i => !acc.includes(i));
+    console.log(restUsers);
     const user = restUsers[Math.floor(Math.random() * restUsers.length)];
     return acc.concat([user]);
   }, []);
@@ -103,6 +105,7 @@ exports.handler = (event, context, callback) => {
         .reduce((acc, value) => acc.concat(value), [])
         .filter(i => i);
 
+      console.log(randomUsers);
       const getter = randomUsers(users, total).join(', ');
       web.chat
         .postMessage({
