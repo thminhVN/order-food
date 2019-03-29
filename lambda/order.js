@@ -103,7 +103,7 @@ exports.handler = (event, context, callback) => {
         .reduce((acc, value) => acc.concat(value), [])
         .filter(i => i);
 
-      const getter = randomUsers(users).join(', ');
+      const getter = randomUsers(users, total).join(', ');
       web.chat
         .postMessage({
           channel: channel.id,
