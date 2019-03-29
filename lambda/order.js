@@ -2,6 +2,7 @@ import qs from 'querystring';
 const { WebClient } = require('@slack/client');
 
 const splitter = ',';
+const maxCountPerPerson = 8;
 
 const getNewText = (origin, user, isAdd = true) => {
   const [dish, usersStr] = origin.split('\n');
@@ -26,8 +27,14 @@ const listUser = usersStr => {
   return usersStr ? usersStr.split(splitter) : [];
 };
 
-const randomUser = users => {
-  return users[Math.floor(Math.random() * users.length)];
+const randomUsers = (users, total) => {
+  const totalRandom = Math.ceil(total / maxCountPerPerson);
+  const arrayNumber = new Array(totalRandom);
+  return arrayNumber.reduce((acc, item) => {
+    const restUsers = users.filter(i => !acc.includes(i));
+    const user = restUsers[Math.floor(Math.random() * restUsers.length)];
+    return acc.concat([user]);
+  }, []);
 };
 
 exports.handler = (event, context, callback) => {
@@ -96,7 +103,7 @@ exports.handler = (event, context, callback) => {
         .reduce((acc, value) => acc.concat(value), [])
         .filter(i => i);
 
-      const getter = randomUser(users);
+      const getter = randomUsers(users).join(', ');
       web.chat
         .postMessage({
           channel: channel.id,
