@@ -3,6 +3,7 @@ const { WebClient } = require('@slack/client');
 
 const splitter = ',';
 const maxCountPerPerson = 8;
+const excludedUsers = ['<@U7SG73Q4C>', '<@U9WSGB42K>'];
 
 const getNewText = (origin, user, isAdd = true) => {
   const [dish, usersStr] = origin.split('\n');
@@ -32,7 +33,9 @@ const randomUsers = users => {
   const totalRandom = Math.ceil(total / maxCountPerPerson);
   const arrayNumber = Array(totalRandom).fill(1);
   return arrayNumber.reduce((acc, item) => {
-    const restUsers = users.filter(i => !acc.includes(i));
+    const restUsers = users.filter(i => {
+      return !excludedUsers.includes(i) && !acc.includes(i);
+    });
     const user = restUsers[Math.floor(Math.random() * restUsers.length)];
     return acc.concat([user]);
   }, []);
@@ -105,8 +108,6 @@ exports.handler = (event, context, callback) => {
         .filter(i => i);
 
       const getter = randomUsers(users).join(', ');
-      console.log(randomUsers(users, total));
-      console.log(getter);
       web.chat
         .postMessage({
           channel: channel.id,
