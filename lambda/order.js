@@ -3,7 +3,7 @@ const { WebClient } = require('@slack/client');
 
 const splitter = ',';
 const maxCountPerPerson = 8;
-const excludedUsers = ['<@U7SG73Q4C>', '<@U9WSGB42K>'];
+const excludedUsers = ['<@UHTC05483>', '<@UJ6STF70E>', '<@UJ3GG82G0>'];
 
 const getNewText = (origin, user, isAdd = true) => {
   const [dish, usersStr] = origin.split('\n');
